@@ -5,6 +5,7 @@
 #include "osc/OscOutboundPacketStream.h"
 #include "ip/UdpSocket.h"
 #include "json.hpp"
+#include <iostream>
 
 using json = nlohmann::json;
 
@@ -23,21 +24,22 @@ int main(int argc, char *argv[])
     char buffer[OUTPUT_BUFFER_SIZE];
     osc::OutboundPacketStream p(buffer, OUTPUT_BUFFER_SIZE);
 
-    json config = {
-        {"id", 0},
-        {"port", 8000},
-        {"location", {
-                {"x", 0}, {"y", 0}, {"z", 0}
-            }
-        },
-        {"rotation", {
-                {"x", 0}, {"y", 0}, {"z", 0}
-            }
-        }
-    };
-    
-    std::string configSerialized = config.dump();
-    
+    // json config = {
+    //     {"id", 0},
+    //     {"port", 8000},
+    //     {"location", {
+    //             {"x", 0}, {"y", 0}, {"z", 0}
+    //         }
+    //     },
+    //     {"rotation", {
+    //             {"x", 0}, {"y", 0}, {"z", 0}
+    //         }
+    //     }
+    // };
+
+    //std::string configSerialized = config.dump();
+    std::string configSerialized = argv[1];
+
     // Sending configuration for Spawning
     p << osc::BeginBundle();
     p << osc::BeginMessage("/spawn/quadcopter")
