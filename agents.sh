@@ -1,7 +1,14 @@
 #!/usr/bin/env bash
+
+bold=$(tput bold)
+normal=$(tput sgr0)
+underline=$(tput smul)
+no_underline=$(tput rmul)
+
 address=$1
-x_separation=$2
-z_init_position=$3
+number_agents=$2
+x_separation=$3
+z_init_position=$4
 
 # Address argument is required
 if [ -z "$address" ]
@@ -11,6 +18,12 @@ then
   echo "USAGE: agent.sh ADDRESS [X_SEPARATION] [Z_INIT_POSITION]"
   echo
   exit 1
+fi
+
+# Default number of agents
+if [ -z "$number_agents" ]
+then
+ number_agents=50
 fi
 
 # Default X separation
@@ -26,13 +39,15 @@ then
 fi
 
 echo
-echo "=== Script running with following values ==="
-echo "Address: $address"
-echo "X separation units: $x_separation"
-echo "Z initial position: $z_init_position"
+echo "${underline}Script running with following values${no_underline}"
+echo
+echo "Number of agents:   ${bold}$number_agents${normal}"
+echo "Address:            ${bold}/spawn/$address${normal}"
+echo "X separation units: ${bold}$x_separation${normal}"
+echo "Z initial position: ${bold}$z_init_position${normal}"
 echo
 
-for agent in {0..50}
+for agent in $(seq 0 $number_agents)
 do
   ./bin/SimpleSend "$address" "{\"id\":$agent,\"port\":$((8000+agent)),\"location\":{\"x\":$((agent * x_separation)),\"y\":50,\"z\":$z_init_position},\"rotation\":{\"x\":0,\"y\":0,\"z\":0}}"
 done
