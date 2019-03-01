@@ -15,7 +15,7 @@ if [ -z "$address" ]
 then
   echo
   echo "ERROR! Address argument is required."
-  echo "USAGE: agent.sh ADDRESS [X_SEPARATION] [Z_INIT_POSITION]"
+  echo "USAGE: agent.sh ADDRESS [NUMBER_AGENTS] [X_SEPARATION] [Z_INIT_POSITION]"
   echo
   exit 1
 fi
@@ -47,7 +47,7 @@ echo "X separation units: ${bold}$x_separation${normal}"
 echo "Z initial position: ${bold}$z_init_position${normal}"
 echo
 
-for agent in $(seq 0 $number_agents)
+for agent in $(seq 0 $((number_agents -1)))
 do
   ./bin/SimpleSend "$address" "{\"id\":$agent,\"port\":$((8000+agent)),\"location\":{\"x\":$((agent * x_separation)),\"y\":50,\"z\":$z_init_position},\"rotation\":{\"x\":0,\"y\":0,\"z\":0}}"
 done
